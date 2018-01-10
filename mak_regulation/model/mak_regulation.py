@@ -36,9 +36,35 @@ class hr_regulation(osv.osv):
 
         'origin': fields.many2one('mak.regulation', 'Origin document',
                                               states={'confirmed': [('readonly', True)]}),
+}
+    
+    def action_to_confirm(self, cr, uid, ids, context=None):
+        res = super(hr_regulation, self).action_to_confirm(cr, uid, ids, context)
+        regulation_ids = self.pool.get('hr.regulation').browse(cr, uid, ids)
+        for regulation in regulation_ids:
+            for line in regulation.line_ids:
+                if line.regulation_type_line:
+                    if line.regulation_type_line == 'benefit':
+                        benefit_id = self.pool.get('hr.benefit').create(cr, uid, {
+                            'date': line.date_of_execution}, context=context)
+                    if line.regulation_type_line == 'punshiment':
+                        punshiment_id = self.pool.get('hr.punishment').create(cr, uid, {
+                            'date': line.date_of_execution, 
+                            'enddate': line.end_date_of_execution
+                            }, context=context)
+                    if line.regulation_type_line == 'deduction':
+                        duration_id = self.pool.get('hr.deduct.duration.employment').create(cr, uid, {
+                            'date_start': line.date_of_execution, 
+                            'date_end': line.end_date_of_execution}, context=context)
+        return res
 
+class hr_regulation_line(osv.osv):
+    _inherit = "hr.regulation.line"
+
+    _columns = {
+        
+    'regulation_type_line': fields.selection([('benefit','Benefit'),('punshiment','Punshiment'),('deduction','Deduction')], 'Additional information on employee records')
     }
-
 
 
 class mak_regulation(osv.osv):

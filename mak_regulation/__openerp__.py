@@ -16,7 +16,7 @@
     "description": """Human Resource Regulations""",
     "website": True,
     "category": "base",
-    "depends": ['hr','mail','l10n_mn_hr_regulation'],
+    "depends": ['hr','mail','l10n_mn_hr_regulation', 'l10n_mn_hr_regulation_edit'],
     "init": [],
     "update_xml": [
         'email_template/mak_reg_email_template_to_assigned.xml',

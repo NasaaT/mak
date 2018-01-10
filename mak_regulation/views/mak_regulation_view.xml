@@ -157,14 +157,27 @@
     </record>
 
     <record id="regulation_type_inherited_on_mak" model="ir.ui.view" >
-        <field name="name">Inherited Regulation</field>
+        <field name="name">Regulation registry</field>
         <field name="model">hr.regulation</field>
         <field name="inherit_id" ref="l10n_mn_hr_regulation.hr_regulation_form"/>
-        <field name="type">form</field>
         <field name="arch" type="xml">
-        <xpath expr="//field[@name='created_employee_id']" position="after">
-            <field name="origin"/>
-        </xpath>
+            <xpath expr="//field[@name='created_employee_id']" position="after">
+                <field name="origin"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="regulation_inherited_mak_regulation" model="ir.ui.view" >
+        <field name="name">Inherited Regulation</field>
+        <field name="model">hr.regulation</field>
+        <field name="inherit_id" ref="l10n_mn_hr_regulation_edit.regulation_inherited"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form[@string='Regulation registry']/sheet/notebook/page/field[@name='line_ids']/tree/field[@name='end_date_of_execution']" position="attributes">
+                <attribute name="required">0</attribute>
+            </xpath>
+            <xpath expr="//form[@string='Regulation registry']/sheet/notebook/page/field[@name='line_ids']/tree/field[@name='end_date_of_execution']" position="after">
+                <field name="regulation_type_line"/>
+            </xpath>
         </field>
     </record>
 
